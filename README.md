@@ -13,8 +13,6 @@ fs.open(path, flags, mode, callback);
 fs.openSync(path, flags, mode);
 ```
 
-Note: fs.openSync is the asynchronous version.
-
 Where:
 
 - path (string | Buffer | URL)
@@ -94,3 +92,36 @@ Where:
 If the file is not modified concurrently, the end-of-file is reached when the number of bytes read is zero.
 
 If this method is invoked as its util.promisify() ed version, it returns a Promise for an Object with bytesRead and buffer properties.
+
+## fs.readfile()
+
+Asynchronously reads the entire contents of a file. Returns the contents of the path.
+
+```javascript
+fs.readFile(path, options, callback);
+```
+
+Where:
+
+- path (string) | (Buffer) | (URL) | (integer)
+  - filename or file descriptor
+- options (Object) | (string)
+  - encoding (string) | (null)
+    - Default: null
+    - If no encoding is specified, then the raw buffer is returned.
+  - flag (string)
+    - Default: 'r'
+- callback (Function)
+  - The callback is passed two arguments (err, data), where data is the contents of the file.
+    - err (Error)
+    - data (string) | (Buffer)
+
+When the path is a directory, the behavior of fs.readFile() and fs.readFileSync() is platform-specific. On macOS, Linux, and Windows, an error will be returned. On FreeBSD, a representation of the directory's contents will be returned.
+
+The fs.readFile() function buffers the entire file. To minimize memory costs, when possible prefer streaming via fs.createReadStream().
+
+**File descriptors**:
+
+1. Any specified file descriptor has to support reading.
+2. If a file descriptor is specified as the path, it will not be closed automatically.
+3. The reading will begin at the current position.
