@@ -125,3 +125,33 @@ The fs.readFile() function buffers the entire file. To minimize memory costs, wh
 1. Any specified file descriptor has to support reading.
 2. If a file descriptor is specified as the path, it will not be closed automatically.
 3. The reading will begin at the current position.
+
+## fs.write()
+
+Write buffer to the file specified by fd. If buffer is a normal object, it must have an own toString function property.
+
+```javascript
+fs.write(fd, buffer[, offset[, length[, position]]], callback)
+```
+
+Where:
+
+- fd (integer)
+- buffer (Buffer) | (TypedArray) | (DataView) | (string) | (Object)
+- offset (integer)
+  - offset determines the part of the buffer to be written.
+- length (integer)
+  - length is an integer specifying the number of bytes to write.
+- position (integer)
+  - position refers to the offset from the beginning of the file where this data should be written. If typeof position !== 'number', the data will be written at the current position.
+- callback (Function)
+  - The callback will be given three arguments (err, bytesWritten, buffer) where bytesWritten specifies how many bytes were written from buffer.
+    - err (Error)
+    - bytesWritten (integer)
+    - buffer (Buffer) | (TypedArray) | (DataView)
+
+If this method is invoked as its util.promisify() ed version, it returns a Promise for an Object with bytesWritten and buffer properties.
+
+It is unsafe to use fs.write() multiple times on the same file without waiting for the callback. For this scenario, fs.createWriteStream() is recommended.
+
+On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
