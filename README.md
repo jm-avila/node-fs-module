@@ -155,3 +155,37 @@ If this method is invoked as its util.promisify() ed version, it returns a Promi
 It is unsafe to use fs.write() multiple times on the same file without waiting for the callback. For this scenario, fs.createWriteStream() is recommended.
 
 On Linux, positional writes don't work when the file is opened in append mode. The kernel ignores the position argument and always appends the data to the end of the file.
+
+## fs.writeFile()
+
+When file is a filename, asynchronously writes data to the file, replacing the file if it already exists. When file is a file descriptor, the behavior is similar to calling fs.write() directly (which is recommended). **This means that you can directly pass the file path or open the file and pass the file descriptor (fd).**
+
+data can be a string or a buffer.
+
+```javascript
+fs.writeFile(file, data[, options], callback)#
+```
+
+Where:
+
+- file (string) | (Buffer) | (URL) | (integer)
+  - filename or file descriptor
+- data (string) | (Buffer) | (TypedArray) | (DataView) | (Object)
+- options (Object) | (string)
+  - encoding (string) | (null)
+    - Default: 'utf8'
+  - mode (integer)
+    - Default: 0o666
+  - flag (string)
+    - Default: 'w'.
+- callback (Function)
+  - err (Error)
+
+The encoding option is ignored if data is a buffer. If data is a normal object, it must have an own toString function property.
+If options is a string, then it specifies the encoding.
+It is unsafe to use fs.writeFile() multiple times on the same file without waiting for the callback. For this scenario, fs.createWriteStream() is recommended.
+
+**Using fs.writeFile() with file descriptors**:
+When file is a file descriptor, the behavior is almost identical to directly calling fs.write(). The difference from directly calling fs.write() is that under some unusual conditions, fs.write() might write only part of the buffer and need to be retried to write the remaining data, whereas fs.writeFile() retries until the data is entirely written (or an error occurs).
+
+The implications of this are a common source of confusion. In the file descriptor case, the file is not replaced! The data is not necessarily written to the beginning of the file, and the file's original data may remain before and/or after the newly written data.
