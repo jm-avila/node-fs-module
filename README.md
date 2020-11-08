@@ -60,3 +60,37 @@ Flags:
 Used to return information about the given file or directory. It returns an fs.Stats object which has several properties and methods to get details about the file or directory.
 
 A fs.Stats object provides information about a file.
+
+## fs.read()
+
+Read data from the file specified by fd.
+
+```javascript
+fs.read(fd, [options,] callback)
+```
+
+Where:
+
+- fd (integer)
+- options (Object)
+  - buffer (Buffer | TypedArray | DataView)
+    - Default: Buffer.alloc(16384)
+    - the buffer that the data (read from the fd) will be written to.
+  - offset (integer)
+    - Default: 0
+    - the offset in the buffer to start writing at.
+  - length (integer)
+    - Default: buffer.length
+    - an integer specifying the number of bytes to read.
+  - position (integer)
+    - Default: null
+    - an argument specifying where to begin reading from in the file. If position is null, data will be read from the current file position, and the file position will be updated. If position is an integer, the file position will remain unchanged.
+- callback (Function)
+  - The callback is given the three arguments, (err, bytesRead, buffer).
+    - err (Error)
+    - bytesRead (integer)
+    - buffer (Buffer)
+
+If the file is not modified concurrently, the end-of-file is reached when the number of bytes read is zero.
+
+If this method is invoked as its util.promisify() ed version, it returns a Promise for an Object with bytesRead and buffer properties.
