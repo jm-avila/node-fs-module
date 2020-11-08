@@ -189,3 +189,27 @@ It is unsafe to use fs.writeFile() multiple times on the same file without waiti
 When file is a file descriptor, the behavior is almost identical to directly calling fs.write(). The difference from directly calling fs.write() is that under some unusual conditions, fs.write() might write only part of the buffer and need to be retried to write the remaining data, whereas fs.writeFile() retries until the data is entirely written (or an error occurs).
 
 The implications of this are a common source of confusion. In the file descriptor case, the file is not replaced! The data is not necessarily written to the beginning of the file, and the file's original data may remain before and/or after the newly written data.
+
+## fs.readdir()
+
+Asynchronous readdir. Reads the contents of a directory. The callback gets two arguments (err, files) where files is an array of the names of the files in the directory excluding '.' and '..'.
+
+```javascript
+fs.readdir(path[, options], callback)#
+```
+
+Where:
+
+- path (string) | (Buffer) | (URL)
+- options (string) | (Object)
+- encoding (string)
+  - Default: 'utf8
+- withFileTypes (boolean)
+  - Default: fals
+- callback Function
+  - err Error
+  - files (string[]) | (Buffer[]) | (fs.Dirent[])
+
+The optional options argument can be a string specifying an encoding, or an object with an encoding property specifying the character encoding to use for the filenames passed to the callback. If the encoding is set to 'buffer', the filenames returned will be passed as Buffer objects.
+
+If options.withFileTypes is set to true, the files array will contain fs.Dirent objects.
