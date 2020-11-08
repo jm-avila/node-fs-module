@@ -2,7 +2,7 @@
 
 The fs module provides a lot of very useful functionality to access and interact with the file system. There is no need to install it. Being part of the Node.js core, it can be used by simply requiring it.
 
-## fs.open & fs.openSync
+## fs.open
 
 Asynchronous file open. You'd call fs.open() if you want to perform several actions on a file since you wouldn't want to constantly reopen and reclose the same file if you're working on it. You will need to close the file by calling fs.close().
 
@@ -12,6 +12,8 @@ Returns an integer representing the file descriptor.
 fs.open(path, flags, mode, callback);
 fs.openSync(path, flags, mode);
 ```
+
+Note: fs.openSync is the asynchronous version.
 
 Where:
 
@@ -27,8 +29,6 @@ Where:
   - The callback gets two arguments (err, fd).
     - err (Error)
     - fd (integer)
-
-Note: fs.openSync is the asynchronous version.
 
 Flags:
 
@@ -54,3 +54,5 @@ Flags:
   - Open file for reading and appending. File is created if it doesn’t exists.
 - ax+
   - It is same as ‘a+’ but fails if path exists.
+
+## fs.open & fs.openSync
