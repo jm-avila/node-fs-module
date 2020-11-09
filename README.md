@@ -280,3 +280,42 @@ If autoClose is false, then the file descriptor won't be closed, even if there's
 mode sets the file mode (permission and sticky bits), but only if the file was created.
 
 If options is a string, then it specifies the encoding.
+
+## fs.createWriteStream()
+
+```javascript
+fs.createWriteStream(path[, options])#
+```
+
+Where:
+
+- path (string) | (Buffer) | (URL)
+- options (string) | (Object)
+  - flags (string)
+    - Default: 'w'.
+  - encoding (string)
+    - Default: 'utf8'
+  - fd (integer)
+    - Default: null
+  - mode (integer)
+    - Default: 0o666
+  - autoClose (boolean)
+    - Default: true
+  - emitClose (boolean)
+    - Default: false
+  - start (integer)
+  - fs (Object) | (null)
+    - Default: null
+- Returns: (fs.WriteStream)
+
+options may also include a start option to allow writing data at some position past the beginning of the file, allowed values are in the [0, Number.MAX_SAFE_INTEGER] range. Modifying a file rather than replacing it may require the flags option to be set to r+ rather than the default w. The encoding can be any one of those accepted by Buffer.
+
+If autoClose is set to true (default behavior) on 'error' or 'finish' the file descriptor will be closed automatically. If autoClose is false, then the file descriptor won't be closed, even if there's an error. It is the application's responsibility to close it and make sure there's no file descriptor leak.
+
+By default, the stream will not emit a 'close' event after it has been destroyed. This is the opposite of the default for other Writable streams. Set the emitClose option to true to change this behavior.
+
+By providing the fs option it is possible to override the corresponding fs implementations for open, write, writev and close. Overriding write() without writev() can reduce performance as some optimizations (\_writev()) will be disabled. When providing the fs option, overrides for open, close, and at least one of write and writev are required.
+
+Like ReadStream, if fd is specified, WriteStream will ignore the path argument and will use the specified file descriptor. This means that no 'open' event will be emitted. fd should be blocking; non-blocking fds should be passed to net.Socket.
+
+If options is a string, then it specifies the encoding.
