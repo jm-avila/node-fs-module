@@ -213,3 +213,25 @@ Where:
 The optional options argument can be a string specifying an encoding, or an object with an encoding property specifying the character encoding to use for the filenames passed to the callback. If the encoding is set to 'buffer', the filenames returned will be passed as Buffer objects.
 
 If options.withFileTypes is set to true, the files array will contain fs.Dirent objects.
+
+## fs.mkdir()
+
+Asynchronously creates a directory.
+
+```javascript
+fs.mkdir(path[, options], callback)
+```
+
+Where:
+
+- path (string) | (Buffer) | (URL)
+- options (Object) | (integer)
+  - The optional options argument can be an integer specifying mode (permission and sticky bits), or an object with a mode property and a recursive property indicating whether parent directories should be created.
+  - recursive (boolean)
+    - Default: false
+    - Calling fs.mkdir() when path is a directory that exists results in an error only when recursive is false.
+  - mode (string) | (integer)
+    - Default: 0o777.
+- callback (Function)
+  - The callback is given a possible exception and, if recursive is true, the first directory path created, (err, [path]).
+  - err (Error)
