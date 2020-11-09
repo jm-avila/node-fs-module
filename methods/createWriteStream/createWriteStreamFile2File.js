@@ -1,13 +1,3 @@
-/*
-defaults: {
-    flags: "w",
-    enconding: "utf8",
-    fd: null,
-    mode: 0o666,
-    autoClose: true
-}
-*/
-
 const fs = require("fs");
 const readFilePath = "./methods/createWriteStream/file.txt";
 const writeFilePath = "./methods/createWriteStream/file2.txt";
