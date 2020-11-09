@@ -235,3 +235,48 @@ Where:
 - callback (Function)
   - The callback is given a possible exception and, if recursive is true, the first directory path created, (err, [path]).
   - err (Error)
+
+## fs.createReadStream()
+
+fs.createReadStream(path[, options])#
+
+Where:
+
+- path (string) | (Buffer) | (URL)
+- options (string) | (Object)
+  - flags (string)
+    - Default: 'r'.
+  - encoding (string)
+    - Default: null
+  - fd (integer)
+    - Default: null
+  - mode (integer)
+    - Default: 0o666
+  - autoClose (boolean)
+    - Default: true
+  - emitClose (boolean)
+    - Default: false
+  - start (integer)
+  - end (integer)
+    - Default: Infinity
+  - highWaterMark (integer)
+    - Default: 64 \* 1024
+  - fs (Object) | (null)
+    - Default: null
+- Returns: (fs.ReadStream)
+
+options can include start and end values to read a range of bytes from the file instead of the entire file. Both start and end are inclusive and start counting at 0, allowed values are in the [0, Number.MAX_SAFE_INTEGER] range. If fd is specified and start is omitted or undefined, fs.createReadStream() reads sequentially from the current file position. The encoding can be any one of those accepted by Buffer.
+
+If fd is specified, ReadStream will ignore the path argument and will use the specified file descriptor. This means that no 'open' event will be emitted. fd should be blocking; non-blocking fds should be passed to net.Socket.
+
+If fd points to a character device that only supports blocking reads (such as keyboard or sound card), read operations do not finish until data is available. This can prevent the process from exiting and the stream from closing naturally.
+
+By default, the stream will not emit a 'close' event after it has been destroyed. This is the opposite of the default for other Readable streams. Set the emitClose option to true to change this behavior.
+
+By providing the fs option, it is possible to override the corresponding fs implementations for open, read, and close. When providing the fs option, overrides for open, read, and close are required.
+
+If autoClose is false, then the file descriptor won't be closed, even if there's an error. It is the application's responsibility to close it and make sure there's no file descriptor leak. If autoClose is set to true (default behavior), on 'error' or 'end' the file descriptor will be closed automatically.
+
+mode sets the file mode (permission and sticky bits), but only if the file was created.
+
+If options is a string, then it specifies the encoding.
